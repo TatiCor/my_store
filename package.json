@@ -1,0 +1,27 @@
+{
+  "name": "my-store",
+  "version": "1.0.0",
+  "main": "node index.js",
+  "scripts": {
+    "dev": "node index.js",
+    "start": "node --watch index.js",
+    "lint": "eslint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@faker-js/faker": "^9.2.0",
+    "eslint": "^9.15.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "express": "^4.21.1",
+    "joi": "^17.13.3"
+  }
+}
