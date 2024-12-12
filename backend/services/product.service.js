@@ -1,44 +1,22 @@
-const { faker } = require('@faker-js/faker');
 const boom = require('@hapi/boom');
 
-const  getConecction = require('../libs/postgres');
-const pool = require('../libs/postgres.pool')
+const  getConecction = require('../libs/postgres'); // Client
+const pool = require('../libs/postgres.pool') // Pool
 
 // Entidades: Creamos una clase con el servicio - lógica del negocio
 class ProductsService {
     constructor(){
-        this.products = []; // Repositorio local - simula bbdd
-        this.generate(); // generamos productos con faker
         this.pool = pool;
         this.pool.on('error', (err) => console.error(err)) // manejo de error en pool
     }
     // Funciones - lógica de la app. 
-    generate() {
-        const numberOfProducts = 10;
-
-        for (let i = 0; i < numberOfProducts; i++) {
-            this.products.push({
-                id: faker.string.uuid(),
-                name: faker.commerce.productName(),
-                price: faker.commerce.price(),
-                description: faker.commerce.productDescription(),
-                image: faker.image.url()
-            });
-        }
-    }
-
     async find() {
 /*      const products = this.products
         return products; -- SIN BBDD*/
 
-        const client = await getConecction();
-        try {
-            const query = 'SELECT * FROM products';
-            const result = await client.query(query);
-            return result.rows;
-        } finally {
-            client.end(); // Siempre cerramos la conexión
-        }
+        const query = 'SELECT * FROM products'
+        const result = await this.pool.query(query)
+        return result.rows
     }
 
     async findOne(id) {
@@ -53,7 +31,7 @@ class ProductsService {
         const query = 'SELECT * FROM products'
         const result = await this.pool(query)
         return result.rows
-    } */
+    }  */
 
 /*     async findWithClient () {
         const client = getConecction();
