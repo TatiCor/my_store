@@ -2,21 +2,31 @@ const boom = require('@hapi/boom');
 
 const  getConecction = require('../libs/postgres'); // Client
 const pool = require('../libs/postgres.pool') // Pool
+const sequelize = require('../libs/sequelize')
 
 // Entidades: Creamos una clase con el servicio - lógica del negocio
 class ProductsService {
     constructor(){
-        this.pool = pool;
-        this.pool.on('error', (err) => console.error(err)) // manejo de error en pool
+        
     }
     // Funciones - lógica de la app. 
     async find() {
 /*      const products = this.products
         return products; -- SIN BBDD*/
 
-        const query = 'SELECT * FROM products'
+        // Sin ORM
+/*      const query = 'SELECT * FROM products'
         const result = await this.pool.query(query)
-        return result.rows
+        return result.rows */
+
+        // Con ORM
+        const query = 'SELECT * FROM products'; 
+        const [data, metadata] = await sequelize.query(query);
+        return {
+            data,
+            metadata
+        }
+        
     }
 
     async findOne(id) {
