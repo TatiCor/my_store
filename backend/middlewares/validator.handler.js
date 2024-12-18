@@ -1,6 +1,6 @@
 const boom = require('@hapi/boom');
 
-// Middleware: recibe schema y propiedad
+// Middleware: recibe schema y propiedad a validar
 const validatorHandler = (schema, property) => {
     return (req, res, next) => {
         const data = req[property] // establecemos la data dinámica porque puede venir en body, params, query.  

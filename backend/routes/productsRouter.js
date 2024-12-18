@@ -2,7 +2,7 @@ const express = require('express');
 
 const ProductsService = require('./../services/product.service');
 const validatorHandler = require('../middlewares/validator.handler')
-const { createProductSchema, updateProductSchema, getProductSchema} = require('../schemas/product.schema')
+const { createProductSchema, updateProductSchema, getProductSchema, deleteProductSchema} = require('../schemas/product.schema')
 
 const router = express.Router();
 const service = new ProductsService();
@@ -44,18 +44,25 @@ router.patch('/:id',
     validatorHandler(getProductSchema, 'params'), // valido el parametro id
     validatorHandler(updateProductSchema, 'body'), // validamos datos a actualizar
     async (req, res) => {
-        const { id } = req.params;
-        const body = req.body
-        const updatedProduct = await service.update(id, body)
-            if (!updatedProduct) {
-                return res.status(400).json({message: 'FaltanProducto no encontrado para actualizar.'})
-            }
-    
-    res.status(200).json({ message: 'Actualización exitosa.', data: updatedProduct });
+        try {
+            const { id } = req.params;
+            const body = req.body;
+            const updatedProduct = await service.update(id, body);
+
+            res.status(200).json({ 
+                message: 'Actualización exitosa.', 
+                data: updatedProduct 
+            });
+        } catch (error) {
+            next(error); // Pasa el error al middleware de manejo
+        }
     }
 );
 
-router.delete('/:id', async (req, res) => {
+router.delete(
+    '/:id',
+    validatorHandler(deleteProductSchema,'params'),
+    async (req, res) => {
     const {id} = req.params;
     const deletedProduct = await service.delete(id);
     if (!deletedProduct) {

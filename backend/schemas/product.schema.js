@@ -1,13 +1,13 @@
 const Joi = require('joi');
 
-const id = Joi.string().uuid();
+const id = Joi.number().integer().positive();
 const name = Joi.string().min(3).max(15);
 const price = Joi.number().integer().min(10);
 const description = Joi.string().optional();
 const image = Joi.string().uri().optional();
 
 
-// Esquema para crear producto
+// Esquema para crear producto a validar
 const createProductSchema = Joi.object({
     name: name.required(),
     price: price.required(),
@@ -28,7 +28,10 @@ const getProductSchema = Joi.object({
     id: id.required()
 });
 
+const deleteProductSchema = Joi.object({
+    id: id.required()
+})
 // es buena práctica dejarlo como objeto aunque tenga un sólo campo para que sea flexible.
 
 
-module.exports = { createProductSchema, updateProductSchema, getProductSchema}
+module.exports = { createProductSchema, updateProductSchema, getProductSchema, deleteProductSchema}
