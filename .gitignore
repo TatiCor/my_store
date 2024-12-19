@@ -212,6 +212,7 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-
+# BBDD
 postgres_data
+mysql_data
 config

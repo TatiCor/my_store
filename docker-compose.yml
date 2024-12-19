@@ -1,5 +1,5 @@
-
 services:
+  # contenedor BBDD PostgreSQL
   postgres:
     image: postgres:13
     environment:
@@ -11,6 +11,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # contenedor pgAdmin para gestionar PostgreSQL
   pgadmin:
     image: dpage/pgadmin4
     environment:
@@ -18,6 +19,32 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - 5050:80
-      
+    depends_on:
+      - postgres
+
+  # contenedor MySQL
+  mysql:
+    image: mysql:8.0.40
+    environment:
+      - MYSQL_DATABASE=my_store
+      - MYSQL_USER=tati
+      - MYSQL_PASSWORD=admin123
+      - MYSQL_ROOT_PASSWORD=root123
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  # contenedor phpMyAdmin para gestionar MySQL
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_HOST=mysql
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+
 volumes:
-  postgres_data: 
+  postgres_data:
+  mysql_data:
