@@ -2,7 +2,7 @@ const express = require('express');
 
 const UsersService = require('./../services/user.service');
 const validatorHandler = require('../middlewares/validator.handler');
-const { createUserSchema, getUserSchema, updateUserSchema } = require('../schemas/users.schema');
+const { createUserSchema, getUserSchema, updateUserSchema, deleteUserSchema } = require('../schemas/users.schema');
 
 const router = express.Router();
 const service = new UsersService();
@@ -16,7 +16,8 @@ router.get('/', async(req, res, next) => {
     }
 });
 
-router.get('/:id',  
+router.get(
+    '/:id',  
     validatorHandler(getUserSchema, 'params'), // middleware de validación
     async (req, res, next) => {
         try {
@@ -27,7 +28,7 @@ router.get('/:id',
             next(error);
         }
     }
-)
+);
 
 router.post(
             '/',
@@ -41,6 +42,43 @@ router.post(
         next(error);
     }
 }
+);
+
+router.patch(
+    '/:id',
+    validatorHandler(getUserSchema, 'params'),
+    validatorHandler(updateUserSchema, 'body'),
+    async (req, res, next) =>{
+        try {
+            const { id }= req.params;
+            const body = req.body;
+            const userUpdated = await service.update(id, body)
+
+            res.status(200).json({
+                message: 'Actualización exitosa.', 
+                data: userUpdated
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+router.delete(
+    '/:id',
+    validatorHandler(deleteUserSchema, 'params'),
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const userDeleted = await service.delete(id) 
+            if (!userDeleted) {
+                return res.status(400).json({message: 'Usuario no encontrado para eliminar.'})
+            }
+            res.status(200).json({ message: 'Usuario eliminado con éxito.', data: userDeleted });
+        } catch (error) {
+            next(error);
+        }
+    }   
 )
 
 

@@ -2,7 +2,7 @@ const express = require('express'); // importo express
 const routerApi = require('./routes');
 const app = express(); // instancio express
 const port = process.env.PORT || 3000;
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error.handler')
+const { logErrors, sequelizeErrorHandler, errorHandler, boomErrorHandler } = require('./middlewares/error.handler')
 
 // Middleware
 app.use(express.json()); // parsea datos que recibimos en JSON del frontend
@@ -17,8 +17,9 @@ routerApi(app);
 
 // middleware de errores.
 app.use(logErrors);
-app.use(boomErrorHandler);
-app.use(errorHandler);
+app.use(sequelizeErrorHandler); // Maneja errores específicos de Sequelize
+app.use(boomErrorHandler); // Maneja errores de Boom
+app.use(errorHandler); // Maneja errores genéricos
 
 // Levantar servidor
 app.listen(port, () => {

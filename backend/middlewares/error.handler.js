@@ -1,3 +1,5 @@
+const { ValidationError, UniqueConstraintError } = require('sequelize'); // para errores si creamos el mismo mail.
+
 // Middleware para registrar errores
 const logErrors = (err, req, res, next) => {
     console.error(err.stack);
@@ -22,4 +24,27 @@ const errorHandler = (err, req, res, next) => {
     });
 };
 
-module.exports = { logErrors, boomErrorHandler, errorHandler };
+const sequelizeErrorHandler = (err, req, res, next) => {
+    if (err instanceof UniqueConstraintError) {
+        res.status(409).json({
+            statusCode: 409,
+            error: 'Bad Request',
+            message: `El correo electrónico ya está registrado: ${err.errors[0].value}`,
+        });
+    } else if (err instanceof ValidationError) {
+        res.status(400).json({
+            statusCode: 400,
+            error: 'Bad Request',
+            message: err.errors.map(e => e.message).join(', '),
+        });
+    } else {
+        next(err); // Pasa al siguiente middleware si no es un error de Sequelize
+    }
+};
+
+module.exports = { 
+    logErrors, 
+    sequelizeErrorHandler,
+    boomErrorHandler, 
+    errorHandler 
+};

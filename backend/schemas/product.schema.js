@@ -33,5 +33,9 @@ const deleteProductSchema = Joi.object({
 })
 // es buena práctica dejarlo como objeto aunque tenga un sólo campo para que sea flexible.
 
-
-module.exports = { createProductSchema, updateProductSchema, getProductSchema, deleteProductSchema}
+module.exports = { 
+    createProductSchema, 
+    updateProductSchema, 
+    getProductSchema, 
+    deleteProductSchema
+};

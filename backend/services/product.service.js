@@ -2,7 +2,9 @@
 const  getConecction = require('../libs/postgres'); // Client
 const pool = require('../libs/postgres.pool') // Pool
 
-const { models } = require('../libs/sequelize')
+const { models } = require('../libs/sequelize') // ORM
+const boom = require('@hapi/boom');
+
 
 // Entidades: Creamos una clase con el servicio - lógica del negocio
 class ProductsService {
@@ -55,18 +57,12 @@ class ProductsService {
 
     async update(id, changes) {
         const productToUpdate = await this.findOne(id);
-        if (!productToUpdate) {
-            throw boom.notFound('Producto no encontrado.');
-        }
         const productUpdated = await productToUpdate.update(changes)
         return productUpdated;
     }
 
     async delete(id) {
         const productToDelete = await this.findOne(id);
-        if (!productToDelete) {
-            throw boom.notFound('Producto no encontrado.');  // Retorna null si el producto no existe
-        }
         await productToDelete.destroy();
         return { id }
     }   
