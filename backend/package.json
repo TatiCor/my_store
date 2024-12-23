@@ -5,7 +5,11 @@
   "scripts": {
     "dev": "node --watch --env-file=.env index.js",
     "start": "node --env-file=.env index.js",
-    "lint": "eslint"
+    "lint": "eslint",
+    "migrations:generate": "sequelize-cli migration:generate --name",
+    "migration:run": "sequelize-cli db:migrate",
+    "migrations:revert": "sequelize-cli db:migrate:undo",
+    "migrations:delete": "sequelize-cli db:migrate:undo:all"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +24,7 @@
   },
   "dependencies": {
     "@hapi/boom": "^10.0.1",
+    "dotenv": "^16.4.7",
     "express": "^4.21.1",
     "joi": "^17.13.3",
     "pg": "^8.13.1",
