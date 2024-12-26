@@ -29,7 +29,7 @@ const sequelizeErrorHandler = (err, req, res, next) => {
         res.status(409).json({
             statusCode: 409,
             error: 'Bad Request',
-            message: `El correo electrónico ya está registrado: ${err.errors[0].value}`,
+            message: `El usuario ya está registrado: ${err.errors[0].value}`,
         });
     } else if (err instanceof ValidationError) {
         res.status(400).json({

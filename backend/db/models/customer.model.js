@@ -34,6 +34,8 @@ const CustomerSchema = {
         field: 'user_id', // Nombre de la columna en la tabla
         allowNull: false,
         type: DataTypes.INTEGER,
+        unique: true,
+                
         references: {
             key: 'id', // Nombre de la columna referenciada
             model: USER_TABLE // Nombre de la tabla referenciada
