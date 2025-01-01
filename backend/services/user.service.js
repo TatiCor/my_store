@@ -14,7 +14,9 @@ class UsersService {
     }
 
     async create(data) {
-        const newUser = await models.User.create(data);
+        const newUser = await models.User.create(data, {
+            include: ['customer'] // array con asociaciones a incluir
+        });
         return newUser;
     }
 

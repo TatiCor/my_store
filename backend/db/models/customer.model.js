@@ -50,7 +50,7 @@ class Customer extends Model {
          // Aquí defines relaciones con otros modelos
         this.belongsTo(models.User, {
             as: 'user',
-            foreignKey: 'user_id'
+            foreignKey: 'userId'
         });
     };
     static config(sequelize) {

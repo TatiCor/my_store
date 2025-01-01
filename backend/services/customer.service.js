@@ -5,7 +5,9 @@ class CustomersService {
     constructor() {}
 
     async find() {
-        const customers = await models.Customer.findAll();
+        const customers = await models.Customer.findAll({
+            include: ['user'] // array con asociaciones a incluir
+        });
         if (!customers) {
             throw boom.notFound('Customers not found');
         } 
@@ -13,7 +15,9 @@ class CustomersService {
     }
 
     async create(data) {
-        const newCustomer = await models.Customer.create(data);
+        const newCustomer = await models.Customer.create(data, {
+            include: ['user'] // array con asociaciones a incluir
+        });
         return newCustomer;
     }
 
