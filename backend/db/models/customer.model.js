@@ -1,6 +1,6 @@
 const { Model, DataTypes, Sequelize } = require('sequelize');
 
-const {USER_TABLE} = require('./user.model');
+const { USER_TABLE } = require('./user.model');
 const CUSTOMER_TABLE = 'customers'; 
 
 // Schema: son distintos a los schemas de validación de entrada con Joi - Define la estructura de la BBDD

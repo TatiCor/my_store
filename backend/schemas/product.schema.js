@@ -5,6 +5,7 @@ const name = Joi.string().min(3).max(15);
 const price = Joi.number().integer().min(10);
 const description = Joi.string().optional();
 const image = Joi.string().uri().optional();
+const categoryId = Joi.number().integer().positive();
 
 
 // Esquema para crear producto a validar
@@ -12,7 +13,8 @@ const createProductSchema = Joi.object({
     name: name.required(),
     price: price.required(),
     description: description.required(),
-    image: image.required()
+    image: image.required(),
+    categoryId: categoryId.required()
 });
 
 // Esquema para actualizar

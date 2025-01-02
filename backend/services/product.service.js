@@ -20,8 +20,10 @@ class ProductsService {
         return result.rows */
 
         // Con ORM
-        const rta = await models.Product.findAll()
-        return rta
+        const products = await models.Product.findAll({
+            include: ['category'] // array con asociaciones a incluir
+        })
+        return products
         
     }
 
