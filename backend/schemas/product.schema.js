@@ -7,6 +7,10 @@ const description = Joi.string().optional();
 const image = Joi.string().uri().optional();
 const categoryId = Joi.number().integer().positive();
 
+const limit = Joi.number().integer().positive();
+const offset = Joi.number().integer()
+
+
 
 // Esquema para crear producto a validar
 const createProductSchema = Joi.object({
@@ -35,9 +39,16 @@ const deleteProductSchema = Joi.object({
 })
 // es buena práctica dejarlo como objeto aunque tenga un sólo campo para que sea flexible.
 
+// params tipo query
+const queryProductSchema = Joi.object({
+    limit,
+    offset
+});
+
 module.exports = { 
     createProductSchema, 
     updateProductSchema, 
     getProductSchema, 
-    deleteProductSchema
+    deleteProductSchema,
+    queryProductSchema
 };

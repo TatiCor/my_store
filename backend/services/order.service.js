@@ -4,7 +4,17 @@ class OrdersService {
     constructor() {}
 
     async find() {
-        const orders = await models.Order.findAll();
+        const orders = await models.Order.findAll( {
+            include: [
+                {
+                    association: 'items', // Incluye los productos relacionados
+                    through: {
+                        attributes: ['amount'], // Incluye solo los campos necesarios de la tabla intermedia
+                    }
+                }
+            ]
+        });
+        
         if (!orders) {
             throw boom.notFound('Orders not found');
         }
@@ -13,7 +23,12 @@ class OrdersService {
 
     async findOne(id) {
         const order = await models.Order.findByPk(id, {
-            include: ['customer']
+            include: [{
+                association: 'customer',
+                include: ['user']
+            },
+                'items'
+            ]
         });
         if (!order) {
             throw boom.notFound('Order not found');
@@ -24,6 +39,11 @@ class OrdersService {
     async create(data) {
         const newOrder = await models.Order.create(data);
         return newOrder;
+    }
+
+    async addItem(data) {
+        const newItem = await models.OrderProduct.create(data);
+        return newItem;
     }
 
 /*     async update(id, changes) {

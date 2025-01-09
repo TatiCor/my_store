@@ -21,12 +21,22 @@ const OrderSchema = {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
     },
+    total: {
+        type: DataTypes.VIRTUAL, // No se almacena en la base de datos
+        get() {
+            if (this.items && this.items.length > 0) {
+                return this.items.reduce((total, item) => total + (item.price * item.OrderProduct.amount), 0);
+                
+            }
+            return 0;
+        }
+    },
     createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
         field: 'create_at',
         defaultValue: Sequelize.fn('NOW')
-    },
+    }
 };
 
 // Modelo de la tabla
@@ -38,6 +48,12 @@ class Order extends Model {
             as: 'customer',
             foreignKey: 'customerId'
         })
+        this.belongsToMany(models.Product, {
+            as: 'items',
+            through: models.OrderProduct, // Nombre del modelo intermedio
+            foreignKey: 'orderId', // Llave foránea en la tabla intermedia
+            otherKey: 'productId', // Llave foránea del otro modelo
+        });
     };
 
     static config(sequelize) {

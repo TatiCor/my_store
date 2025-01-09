@@ -2,24 +2,28 @@ const express = require('express');
 
 const ProductsService = require('./../services/product.service');
 const validatorHandler = require('../middlewares/validator.handler')
-const { createProductSchema, updateProductSchema, getProductSchema, deleteProductSchema} = require('../schemas/product.schema')
+const { createProductSchema, updateProductSchema, getProductSchema, deleteProductSchema, queryProductSchema} = require('../schemas/product.schema')
 
 const router = express.Router();
 const service = new ProductsService();
 
 
 
-router.get('/',  async (req, res, next) => {
-    try {
-        const products = await service.find();
-        res.status(200).json(products);
-    } catch (error) {
-        next(error)
-    }
+router.get(
+    '/',
+    validatorHandler(queryProductSchema, 'query'), // middleware de validación  
+    async (req, res, next) => {
+        try {
+            const products = await service.find(req.query);
+            res.status(200).json(products);
+        } catch (error) {
+            next(error)
+        }
 
 });
 
-router.get('/:id',  
+router.get(
+    '/:id',  
     validatorHandler(getProductSchema, 'params'), // middleware de validación
     async (req, res, next) => {
         try {

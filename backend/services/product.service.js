@@ -10,19 +10,17 @@ const boom = require('@hapi/boom');
 class ProductsService {
     constructor(){ }
     // Funciones - lógica de la app. 
-    async find() {
-/*      const products = this.products
-        return products; -- SIN BBDD*/
-
-        // Sin ORM
-/*      const query = 'SELECT * FROM products'
-        const result = await this.pool.query(query)
-        return result.rows */
-
+    async find(query) {
         // Con ORM
-        const products = await models.Product.findAll({
-            include: ['category'] // array con asociaciones a incluir
-        })
+        const options = {
+            include: ['category']  // array con asociaciones a incluir
+        };
+        const { limit, offset } = query; // datos para paginación
+        if (limit && offset) {
+            options.limit = limit;
+            options.offset = offset;
+        }
+        const products = await models.Product.findAll(options)
         return products
         
     }

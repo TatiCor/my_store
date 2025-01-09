@@ -1,6 +1,9 @@
 const express = require('express'); 
 const validatorHandler = require('../middlewares/validator.handler')
-const { getOrderSchema, createOrderSchema } = require('../schemas/order.schema'); // esquemas de validación
+const { 
+    getOrderSchema, 
+    createOrderSchema, 
+    addItemSchema } = require('../schemas/order.schema'); // esquemas de validación
 const OrdersService = require('../services/order.service'); // servicio
 
 const router = express.Router();
@@ -14,21 +17,43 @@ router.get('/', async (req, res) => {
 router.get(
     '/:id', 
     validatorHandler(getOrderSchema, 'params'), 
-    async (req, res) => {
-        const { id } = req.params;
-        const order = await service.findOne(id);
-        res.status(200).json(order);
+    async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            const order = await service.findOne(id);
+            res.status(200).json(order);
+        } catch (error) {
+            next(error);
+        }
 });
 
 router.post(
     '/',
     validatorHandler(createOrderSchema, 'body'),
     async (req, res) => {
-        const body = req.body;
-        const newOrder = await service.create(body);
-        res.status(201).json(newOrder);
+        try {
+            const body = req.body;
+            const newOrder = await service.create(body);
+            res.status(201).json(newOrder);
+        } catch (error) {
+            next(error);
+        }
     }
 );
+
+router.post(
+    '/add-item',
+    validatorHandler(addItemSchema, 'body'),
+    async (req, res) => {
+        try {
+            const body = req.body;
+            const newItem = await service.addItem(body);
+            res.status(201).json(newItem);
+        } catch (error) {
+            next(error);
+        }
+    }
+)
 
 
 module.exports = router;
