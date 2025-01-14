@@ -4,7 +4,7 @@ const { PRODUCT_TABLE } = require('../models/product.model');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface) {
+  async up (queryInterface, Sequelize) {
     await queryInterface.createTable(PRODUCT_TABLE, {
       id: {
         type: DataTypes.INTEGER,
