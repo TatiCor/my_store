@@ -25,16 +25,6 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL',
       },
-      total: {
-          type: DataTypes.VIRTUAL, // No se almacena en la base de datos
-          get() {
-              if (this.items && this.items.length > 0) {
-                  return this.items.reduce((total, item) => total + (item.price * item.OrderProduct.amount), 0);
-                  
-              }
-              return 0;
-          }
-      },
       createdAt: {
           allowNull: false,
           type: DataTypes.DATE,
