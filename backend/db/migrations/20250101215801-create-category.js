@@ -1,3 +1,4 @@
+const { DataTypes } = require('sequelize');
 const { CATEGORY_TABLE, CategorySchema } = require('../models/category.model');
 'use strict';
 
