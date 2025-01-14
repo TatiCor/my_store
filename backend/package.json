@@ -4,7 +4,7 @@
   "main": "node index.js",
   "scripts": {
     "dev": "node --watch --env-file=.env index.js",
-    "start": "node --env-file=.env index.js",
+    "start": "node index.js",
     "lint": "eslint",
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migration:run": "sequelize-cli db:migrate",
