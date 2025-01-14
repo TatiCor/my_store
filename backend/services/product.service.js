@@ -1,4 +1,5 @@
 /* Conexiones nativas */
+const { Op } = require('sequelize');
 const  getConecction = require('../libs/postgres'); // Client
 const pool = require('../libs/postgres.pool') // Pool
 
@@ -13,12 +14,22 @@ class ProductsService {
     async find(query) {
         // Con ORM
         const options = {
-            include: ['category']  // array con asociaciones a incluir
+            include: ['category'],  // array con asociaciones a incluir
+            where: {} // condiciones de búsqueda
         };
-        const { limit, offset } = query; // datos para paginación
+        const { limit, offset, price, price_min, price_max } = query; // datos para paginación
         if (limit && offset) {
             options.limit = limit;
             options.offset = offset;
+        }
+        if (price) {
+            options.where.price = price;
+        }
+        if (price_min && price_max) {
+            options.where.price = {
+                [Op.between]: [price_min, price_max]
+            }
+            
         }
         const products = await models.Product.findAll(options)
         return products

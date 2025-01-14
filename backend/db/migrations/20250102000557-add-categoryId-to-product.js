@@ -8,7 +8,6 @@ module.exports = {
         field: 'category_id', // Nombre de la columna en la tabla
         allowNull: false,
         type: DataTypes.INTEGER,
-        unique: true,
     })
   },
 

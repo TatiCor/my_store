@@ -10,6 +10,9 @@ const categoryId = Joi.number().integer().positive();
 const limit = Joi.number().integer().positive();
 const offset = Joi.number().integer()
 
+price_min = Joi.number().integer().positive();
+price_max = Joi.number().integer().positive();
+
 
 
 // Esquema para crear producto a validar
@@ -42,7 +45,14 @@ const deleteProductSchema = Joi.object({
 // params tipo query
 const queryProductSchema = Joi.object({
     limit,
-    offset
+    offset,
+    price,
+    price_min,
+    price_max: price_max.when('price_min', { 
+        is:  Joi.number().integer().required(), 
+        then: Joi.required() 
+    })
+    
 });
 
 module.exports = { 
