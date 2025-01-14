@@ -1,5 +1,6 @@
 const { Client } = require('pg')
 
+// Conexión sin variables de entorno
 const getConecction = async () => {
     const client = new Client({
         host: 'localhost',
